@@ -24,7 +24,13 @@
       box-shadow: 0 8px 25px rgba(0,0,0,0.5);
     }
     h2 { margin-top: 0; color: #00e5ff; text-align: center; }
-    input, textarea, button {
+    label {
+      display: block;
+      font-size: 13px;
+      color: #aaa;
+      margin-bottom: 5px;
+    }
+    input, select, textarea, button {
       width: 100%;
       box-sizing: border-box;
       margin-bottom: 14px;
@@ -35,6 +41,7 @@
       color: #fff;
       font-size: 15px;
     }
+    select { cursor: pointer; }
     button {
       background: #00e5ff;
       color: #000;
@@ -49,8 +56,20 @@
 <body>
   <div class="card">
     <h2>Donar al Stream</h2>
+    
     <input type="text" id="nombre" placeholder="Tu nombre" maxlength="25">
     <input type="text" id="cantidad" placeholder="Cantidad (ej: 5€, 100 bits)" maxlength="15">
+    
+    <label for="voz">Voz del lector:</label>
+    <select id="voz">
+      <option value="Miguel">Miguel (Español - Chico)</option>
+      <option value="Conchita">Conchita (Español - Chica)</option>
+      <option value="Enrique">Enrique (Español - Chico grave)</option>
+      <option value="Lucia">Lucía (Español - Chica)</option>
+      <option value="Mia">Mía (Español Latino - Chica)</option>
+      <option value="Brian">Brian (Inglés británico / Troleo)</option>
+    </select>
+
     <textarea id="mensaje" rows="3" placeholder="Mensaje que leerá la voz..." maxlength="200"></textarea>
     <button onclick="enviar()">Enviar donación</button>
     <div id="estado"></div>
@@ -62,6 +81,7 @@
     async function enviar() {
       const nombre = document.getElementById('nombre').value.trim() || "Anónimo";
       const cantidad = document.getElementById('cantidad').value.trim() || "1€";
+      const voz = document.getElementById('voz').value;
       const mensaje = document.getElementById('mensaje').value.trim();
       const estado = document.getElementById('estado');
 
@@ -76,7 +96,7 @@
 
       await fetch(`https://ntfy.sh/${CANAL}`, {
         method: 'POST',
-        body: JSON.stringify({ nombre, cantidad, mensaje })
+        body: JSON.stringify({ nombre, cantidad, mensaje, voz })
       });
 
       document.getElementById('mensaje').value = "";
