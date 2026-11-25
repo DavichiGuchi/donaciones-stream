@@ -12,15 +12,17 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
+      padding: 16px;
+      box-sizing: border-box;
     }
     .card {
       background: #1a1a24;
       padding: 28px;
       border-radius: 14px;
       width: 100%;
-      max-width: 380px;
+      max-width: 420px;
       box-shadow: 0 8px 25px rgba(0,0,0,0.5);
     }
     h2 { margin-top: 0; color: #00e5ff; text-align: center; }
@@ -40,7 +42,9 @@
       background: #121218;
       color: #fff;
       font-size: 15px;
+      font-family: inherit;
     }
+    textarea { resize: vertical; }
     select { cursor: pointer; }
     button {
       background: #00e5ff;
@@ -57,8 +61,8 @@
   <div class="card">
     <h2>Donar al Stream</h2>
     
-    <input type="text" id="nombre" placeholder="Tu nombre" maxlength="25">
-    <input type="text" id="cantidad" placeholder="Cantidad (ej: 5€, 100 bits)" maxlength="15">
+    <input type="text" id="nombre" placeholder="Tu nombre" maxlength="50">
+    <input type="text" id="cantidad" placeholder="Cantidad (ej: 5€, 100 bits)" maxlength="30">
     
     <label for="voz">Voz del lector:</label>
     <select id="voz">
@@ -70,7 +74,7 @@
       <option value="Brian">Brian (Inglés británico / Troleo)</option>
     </select>
 
-    <textarea id="mensaje" rows="3" placeholder="Mensaje que leerá la voz..." maxlength="200"></textarea>
+    <textarea id="mensaje" rows="5" placeholder="Mensaje que leerá la voz (hasta 1000 caracteres)..." maxlength="1000"></textarea>
     <button onclick="enviar()">Enviar donación</button>
     <div id="estado"></div>
   </div>
