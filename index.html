@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enviar Donación</title>
+  <style>
+    body {
+      background: #0f0f14;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #1a1a24;
+      padding: 28px;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+    h2 { margin-top: 0; color: #00e5ff; text-align: center; }
+    input, textarea, button {
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 14px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: #121218;
+      color: #fff;
+      font-size: 15px;
+    }
+    button {
+      background: #00e5ff;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover { background: #00b8d4; }
+    #estado { text-align: center; font-size: 14px; color: #00ff88; min-height: 20px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Donar al Stream</h2>
+    <input type="text" id="nombre" placeholder="Tu nombre" maxlength="25">
+    <input type="text" id="cantidad" placeholder="Cantidad (ej: 5€, 100 bits)" maxlength="15">
+    <textarea id="mensaje" rows="3" placeholder="Mensaje que leerá la voz..." maxlength="200"></textarea>
+    <button onclick="enviar()">Enviar donación</button>
+    <div id="estado"></div>
+  </div>
+
+  <script>
+    const CANAL = "stream-donaciones-k9x72m4q8p";
+
+    async function enviar() {
+      const nombre = document.getElementById('nombre').value.trim() || "Anónimo";
+      const cantidad = document.getElementById('cantidad').value.trim() || "1€";
+      const mensaje = document.getElementById('mensaje').value.trim();
+      const estado = document.getElementById('estado');
+
+      if (!mensaje) {
+        estado.style.color = "#ff5252";
+        estado.textContent = "Escribe un mensaje primero.";
+        return;
+      }
+
+      estado.style.color = "#aaa";
+      estado.textContent = "Enviando...";
+
+      await fetch(`https://ntfy.sh/${CANAL}`, {
+        method: 'POST',
+        body: JSON.stringify({ nombre, cantidad, mensaje })
+      });
+
+      document.getElementById('mensaje').value = "";
+      estado.style.color = "#00ff88";
+      estado.textContent = "¡Donación enviada!";
+      setTimeout(() => estado.textContent = "", 2500);
+    }
+  </script>
+</body>
+</html>
